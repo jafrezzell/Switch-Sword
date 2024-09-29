@@ -89,6 +89,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""StrongAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""1c4d71ea-6143-4df9-a4ff-ccf10dd0517b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EvadeButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""2c5ab708-e4a7-4944-abb7-ef00fed3aa51"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -245,6 +263,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""BasicAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""77a29f30-4923-4b99-8d94-0cfc031b781a"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""StrongAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""58beef73-0799-46a6-b520-0d46a1c2dc12"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""EvadeButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -272,6 +312,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_MoveControls_TargetSwitch = m_MoveControls.FindAction("TargetSwitch", throwIfNotFound: true);
         m_MoveControls_Sprint = m_MoveControls.FindAction("Sprint", throwIfNotFound: true);
         m_MoveControls_BasicAttack = m_MoveControls.FindAction("BasicAttack", throwIfNotFound: true);
+        m_MoveControls_StrongAttack = m_MoveControls.FindAction("StrongAttack", throwIfNotFound: true);
+        m_MoveControls_EvadeButton = m_MoveControls.FindAction("EvadeButton", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -340,6 +382,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_MoveControls_TargetSwitch;
     private readonly InputAction m_MoveControls_Sprint;
     private readonly InputAction m_MoveControls_BasicAttack;
+    private readonly InputAction m_MoveControls_StrongAttack;
+    private readonly InputAction m_MoveControls_EvadeButton;
     public struct MoveControlsActions
     {
         private @PlayerControls m_Wrapper;
@@ -351,6 +395,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @TargetSwitch => m_Wrapper.m_MoveControls_TargetSwitch;
         public InputAction @Sprint => m_Wrapper.m_MoveControls_Sprint;
         public InputAction @BasicAttack => m_Wrapper.m_MoveControls_BasicAttack;
+        public InputAction @StrongAttack => m_Wrapper.m_MoveControls_StrongAttack;
+        public InputAction @EvadeButton => m_Wrapper.m_MoveControls_EvadeButton;
         public InputActionMap Get() { return m_Wrapper.m_MoveControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -381,6 +427,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @BasicAttack.started += instance.OnBasicAttack;
             @BasicAttack.performed += instance.OnBasicAttack;
             @BasicAttack.canceled += instance.OnBasicAttack;
+            @StrongAttack.started += instance.OnStrongAttack;
+            @StrongAttack.performed += instance.OnStrongAttack;
+            @StrongAttack.canceled += instance.OnStrongAttack;
+            @EvadeButton.started += instance.OnEvadeButton;
+            @EvadeButton.performed += instance.OnEvadeButton;
+            @EvadeButton.canceled += instance.OnEvadeButton;
         }
 
         private void UnregisterCallbacks(IMoveControlsActions instance)
@@ -406,6 +458,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @BasicAttack.started -= instance.OnBasicAttack;
             @BasicAttack.performed -= instance.OnBasicAttack;
             @BasicAttack.canceled -= instance.OnBasicAttack;
+            @StrongAttack.started -= instance.OnStrongAttack;
+            @StrongAttack.performed -= instance.OnStrongAttack;
+            @StrongAttack.canceled -= instance.OnStrongAttack;
+            @EvadeButton.started -= instance.OnEvadeButton;
+            @EvadeButton.performed -= instance.OnEvadeButton;
+            @EvadeButton.canceled -= instance.OnEvadeButton;
         }
 
         public void RemoveCallbacks(IMoveControlsActions instance)
@@ -441,5 +499,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnTargetSwitch(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnBasicAttack(InputAction.CallbackContext context);
+        void OnStrongAttack(InputAction.CallbackContext context);
+        void OnEvadeButton(InputAction.CallbackContext context);
     }
 }

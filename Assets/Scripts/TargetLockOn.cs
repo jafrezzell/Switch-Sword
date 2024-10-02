@@ -52,7 +52,11 @@ public class TargetLockOn : MonoBehaviour
 
 	private Vector3 printVec;
 
-	private TargetIndicator _targetIndicator;
+    [SerializeField] private Transform _currentPlayerTransform;
+
+    private TargetIndicator _targetIndicator;
+
+
 
 	/// <summary>
 	/// Represents the current target of the player 
@@ -71,6 +75,8 @@ public class TargetLockOn : MonoBehaviour
 		_camStateMachine = GameObject.Find("State-Driven Camera").GetComponent<CinemachineStateDrivenCamera>();
 		_camAnimator = GameObject.Find("State-Driven Camera").GetComponent<Animator>();
 		_targetIndicator = GameObject.Find("Target_Indicator").GetComponent<TargetIndicator>();
+
+		_currentPlayerTransform = GameObject.FindAnyObjectByType<PlayerController>().transform;//Change this initialization later
 
 		// Player Targetting
 		_controls.MoveControls.Targetting.started += ctx =>
@@ -105,7 +111,7 @@ public class TargetLockOn : MonoBehaviour
 			Debug.DrawLine(currentTarget.transform.position, Camera.main.transform.position);
 			Debug.DrawRay(currentTarget.transform.position, printVec);
 			// Ensure that the layer for a gameobject that is targetable is set to Targetable
-			Collider[] potentialTargets = Physics.OverlapSphere(transform.position, targetDetectionRadius, 64);
+			Collider[] potentialTargets = Physics.OverlapSphere(_currentPlayerTransform.position, targetDetectionRadius, 64);
 
 			foreach(Collider collider in potentialTargets)
 			{
@@ -135,7 +141,10 @@ public class TargetLockOn : MonoBehaviour
 	private void OnDrawGizmos()
 	{
 		Gizmos.color = Color.red;
-		Gizmos.DrawWireSphere(transform.position, targetDetectionRadius);
+		if(_currentPlayerTransform != null)
+		{
+            Gizmos.DrawWireSphere(_currentPlayerTransform.position, targetDetectionRadius);
+        }
 	}
 
 	/// <summary>
@@ -150,7 +159,7 @@ public class TargetLockOn : MonoBehaviour
 		}
 
 		// Ensure that the layer for a gameobject that is targetable is set to Targetable
-		Collider[] potentialTargets = Physics.OverlapSphere(transform.position, targetDetectionRadius, 64);
+		Collider[] potentialTargets = Physics.OverlapSphere(_currentPlayerTransform.position, targetDetectionRadius, 64);
 
 		float maxCamPriority = Mathf.NegativeInfinity;
 		Transform target = null;
@@ -197,7 +206,7 @@ public class TargetLockOn : MonoBehaviour
 		// Note:  All calculations only take into effect x and z coordinates, y is ignored in nearly all these calculations
 		Debug.Log($"Right Stick Input:  {switchInput} Right Stick Input Normalized:  {switchInput.normalized}");
 		// Ensure that the layer for a gameobject that is targetable is set to Targetable
-		Collider[] potentialTargets = Physics.OverlapSphere(transform.position, targetDetectionRadius, 64);
+		Collider[] potentialTargets = Physics.OverlapSphere(_currentPlayerTransform.position, targetDetectionRadius, 64);
 		switchInput.Normalize();
 
 		Transform newTarget = null;
@@ -357,7 +366,7 @@ public class TargetLockOn : MonoBehaviour
 	/// <returns></returns>
 	private bool Blocked(Transform transformCheck)
 	{
-		return Physics.Linecast(transform.position, transformCheck.position, obstacleLayerMask);
+		return Physics.Linecast(_currentPlayerTransform.position, transformCheck.position, obstacleLayerMask);
 	}
 
 	/// <summary>
@@ -367,7 +376,7 @@ public class TargetLockOn : MonoBehaviour
 	/// <returns></returns>
 	private bool isInRange(Transform transformCheck)
 	{
-		return Vector3.Distance(transform.position, transformCheck.position) <= LockOnBreakDistance;
+		return Vector3.Distance(_currentPlayerTransform.position, transformCheck.position) <= LockOnBreakDistance;
 	}
 
 	private bool isOffScreen(Vector2 vec2)

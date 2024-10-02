@@ -107,6 +107,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RightTrigger"",
+                    ""type"": ""Button"",
+                    ""id"": ""39862572-9b57-4c19-9ed1-8c32b192436f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LeftTrigger"",
+                    ""type"": ""Button"",
+                    ""id"": ""0026579f-a776-4d4f-8166-6086020f672c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -285,6 +303,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""EvadeButton"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cfae4a88-bbfc-4c1f-9948-c6e951a06c43"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""RightTrigger"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""648293f6-1dce-498e-9805-273a1fc3027e"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""LeftTrigger"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -314,6 +354,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_MoveControls_BasicAttack = m_MoveControls.FindAction("BasicAttack", throwIfNotFound: true);
         m_MoveControls_StrongAttack = m_MoveControls.FindAction("StrongAttack", throwIfNotFound: true);
         m_MoveControls_EvadeButton = m_MoveControls.FindAction("EvadeButton", throwIfNotFound: true);
+        m_MoveControls_RightTrigger = m_MoveControls.FindAction("RightTrigger", throwIfNotFound: true);
+        m_MoveControls_LeftTrigger = m_MoveControls.FindAction("LeftTrigger", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -384,6 +426,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_MoveControls_BasicAttack;
     private readonly InputAction m_MoveControls_StrongAttack;
     private readonly InputAction m_MoveControls_EvadeButton;
+    private readonly InputAction m_MoveControls_RightTrigger;
+    private readonly InputAction m_MoveControls_LeftTrigger;
     public struct MoveControlsActions
     {
         private @PlayerControls m_Wrapper;
@@ -397,6 +441,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @BasicAttack => m_Wrapper.m_MoveControls_BasicAttack;
         public InputAction @StrongAttack => m_Wrapper.m_MoveControls_StrongAttack;
         public InputAction @EvadeButton => m_Wrapper.m_MoveControls_EvadeButton;
+        public InputAction @RightTrigger => m_Wrapper.m_MoveControls_RightTrigger;
+        public InputAction @LeftTrigger => m_Wrapper.m_MoveControls_LeftTrigger;
         public InputActionMap Get() { return m_Wrapper.m_MoveControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -433,6 +479,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @EvadeButton.started += instance.OnEvadeButton;
             @EvadeButton.performed += instance.OnEvadeButton;
             @EvadeButton.canceled += instance.OnEvadeButton;
+            @RightTrigger.started += instance.OnRightTrigger;
+            @RightTrigger.performed += instance.OnRightTrigger;
+            @RightTrigger.canceled += instance.OnRightTrigger;
+            @LeftTrigger.started += instance.OnLeftTrigger;
+            @LeftTrigger.performed += instance.OnLeftTrigger;
+            @LeftTrigger.canceled += instance.OnLeftTrigger;
         }
 
         private void UnregisterCallbacks(IMoveControlsActions instance)
@@ -464,6 +516,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @EvadeButton.started -= instance.OnEvadeButton;
             @EvadeButton.performed -= instance.OnEvadeButton;
             @EvadeButton.canceled -= instance.OnEvadeButton;
+            @RightTrigger.started -= instance.OnRightTrigger;
+            @RightTrigger.performed -= instance.OnRightTrigger;
+            @RightTrigger.canceled -= instance.OnRightTrigger;
+            @LeftTrigger.started -= instance.OnLeftTrigger;
+            @LeftTrigger.performed -= instance.OnLeftTrigger;
+            @LeftTrigger.canceled -= instance.OnLeftTrigger;
         }
 
         public void RemoveCallbacks(IMoveControlsActions instance)
@@ -501,5 +559,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnBasicAttack(InputAction.CallbackContext context);
         void OnStrongAttack(InputAction.CallbackContext context);
         void OnEvadeButton(InputAction.CallbackContext context);
+        void OnRightTrigger(InputAction.CallbackContext context);
+        void OnLeftTrigger(InputAction.CallbackContext context);
     }
 }

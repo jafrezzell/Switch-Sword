@@ -61,7 +61,7 @@ public class PlayerController : Entity
 		};*/
 
 		// Player Jumping
-		_controls.MoveControls.Jump.started += ctx =>
+		/*_controls.MoveControls.Jump.started += ctx =>
 		{
 			if (!IsGrounded()) return;
 			yVelocity += Mathf.Sqrt(JumpHeight * -2f * Physics.gravity.y);
@@ -72,7 +72,7 @@ public class PlayerController : Entity
 			{
 				fasterFall = true;
 			}
-		};
+		};*/
 
 		// Player Sprinting
 		_controls.MoveControls.Sprint.started += ctx =>
@@ -82,12 +82,6 @@ public class PlayerController : Entity
 		_controls.MoveControls.Sprint.canceled += ctx =>
 		{
 			SetSprint(false);
-		};
-
-		// Player Basic Attack
-		_controls.MoveControls.BasicAttack.started += ctx =>
-		{
-			
 		};
 	}
 

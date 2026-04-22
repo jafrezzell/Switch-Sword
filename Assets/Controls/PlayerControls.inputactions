@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "PlayerControls",
     "maps": [
         {
@@ -111,7 +112,7 @@
                     "id": "a77d1585-486a-468c-be7e-d63f0cb4d0ad",
                     "path": "<Gamepad>/leftStick",
                     "interactions": "",
-                    "processors": "StickDeadzone(min=0.5)",
+                    "processors": "StickDeadzone",
                     "groups": "Gamepad",
                     "action": "MoveKeys",
                     "isComposite": false,
@@ -232,7 +233,7 @@
                     "id": "6a09364d-2d99-4925-8f4c-c5b1958f6340",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
-                    "processors": "StickDeadzone(min=0.1)",
+                    "processors": "StickDeadzone(min=0.01)",
                     "groups": "Gamepad",
                     "action": "TargetSwitch",
                     "isComposite": false,

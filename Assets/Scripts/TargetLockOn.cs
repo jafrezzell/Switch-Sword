@@ -240,7 +240,7 @@ public class TargetLockOn : MonoBehaviour
 			{
 				Vector2 potTarScreenPos = Camera.main.WorldToViewportPoint(collider.transform.position);
 
-				if(collider.gameObject == currentTarget.gameObject || isOffScreen(potTarScreenPos))
+				if(collider.gameObject == currentTarget.gameObject /*|| isOffScreen(potTarScreenPos)*/)
 				{
 					continue;
 				}
@@ -295,7 +295,7 @@ public class TargetLockOn : MonoBehaviour
 			{
                 Vector2 potTarScreenPos = Camera.main.WorldToViewportPoint(collider.transform.position);
 
-                if (currentTarget == collider.transform || isOffScreen(potTarScreenPos) || !isInRange(collider.transform))
+                if (currentTarget == collider.transform /*|| isOffScreen(potTarScreenPos)*/ || !isInRange(collider.transform))
                 {
                     continue;
                 }

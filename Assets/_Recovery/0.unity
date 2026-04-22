@@ -1243,9 +1243,7 @@ MonoBehaviour:
   m_AnimatedTarget: {fileID: 432725448}
   m_LayerIndex: 0
   m_ShowDebugText: 0
-  m_ChildCameras:
-  - {fileID: 352749021}
-  - {fileID: 1691656924}
+  m_ChildCameras: []
   m_Instructions:
   - m_FullHash: 492734158
     m_VirtualCamera: {fileID: 352749021}
@@ -3366,7 +3364,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 079ad5a6002b8114a8cbd5c1d37e5807, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0

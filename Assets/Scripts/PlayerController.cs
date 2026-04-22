@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : Entity
 {
@@ -45,19 +46,21 @@ public class PlayerController : Entity
 		{
 			_input = ctx.ReadValue<Vector2>();
 
-			_animator.SetFloat("Move Speed", _input.magnitude);
+			if (_input.magnitude > 1.0f) _input.Normalize();
+			if (_input.magnitude < InputSystem.settings.defaultDeadzoneMin)
+			{
+				Debug.Log("DEADZONE: " + _input.magnitude);
+                _input = Vector2.zero;
+            }
 
-			_currentWalkSpeed = _input.magnitude < 0.5f && !_isSprinting ? WalkSpeedModifier : 1;
+			_animator.SetFloat("Move Speed", _input.magnitude, 0.05f, Time.deltaTime);
+
+			//_currentWalkSpeed = _input.magnitude < 0.5f && !_isSprinting ? WalkSpeedModifier : 1;
             MoveVector = new Vector3(_input.x, MoveVector.y, _input.y);
 		};
 		/*_controls.MoveControls.MoveKeys.canceled += ctx =>
 		{
-			_input = ctx.ReadValue<Vector2>();
-			MoveVector = new Vector3(_input.x, MoveVector.y, _input.y);
-			if (IsGrounded())
-			{
-				momentumBeforeJump = new Vector2(MoveVector.x, MoveVector.z);
-			}
+			Debug.Log("CANCELED");
 		};*/
 
 		// Player Jumping
@@ -119,19 +122,21 @@ public class PlayerController : Entity
 
 	protected override void Move()
 	{
+
 		Vector3 moveDir = MoveVector;
-		if(_input.sqrMagnitude > 0.0f)
-		{
-			float targetAngle = Mathf.Atan2(MoveVector.x, MoveVector.z) * Mathf.Rad2Deg + camTransform.eulerAngles.y;
-			float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _currentVelocity, smoothDamp);
-			transform.rotation = Quaternion.Euler(0.0f, angle, 0.0f);
+		if (_input.sqrMagnitude > 0.0f)
+        {
+            float targetAngle = Mathf.Atan2(MoveVector.x, MoveVector.z) * Mathf.Rad2Deg + camTransform.eulerAngles.y;
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _currentVelocity, smoothDamp);
+            transform.rotation = Quaternion.Euler(0.0f, angle, 0.0f);
 
-			moveDir = Quaternion.Euler(0f, angle, 0f) * Vector3.forward;
-			moveDir.Set(moveDir.x, yVelocity, moveDir.z);
-		}
+            moveDir = Quaternion.Euler(0f, angle, 0f) * Vector3.forward;
+            moveDir.Set(moveDir.x, yVelocity, moveDir.z);
+        }
 
-		_characterController.Move(moveDir.normalized * Time.deltaTime * MoveSpeed *_currentWalkSpeed * _currentSprintSpeed);
-	}
+
+		_characterController.Move(moveDir * _input.magnitude * Time.deltaTime * MoveSpeed  * _currentSprintSpeed);
+    }
 
 	protected override void Look()
 	{

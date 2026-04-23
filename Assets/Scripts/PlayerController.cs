@@ -49,11 +49,9 @@ public class PlayerController : Entity
 			if (_input.magnitude > 1.0f) _input.Normalize();
 			if (_input.magnitude < InputSystem.settings.defaultDeadzoneMin)
 			{
-				Debug.Log("DEADZONE: " + _input.magnitude);
+				//Debug.Log("DEADZONE: " + _input.magnitude);
                 _input = Vector2.zero;
             }
-
-			_animator.SetFloat("Move Speed", _input.magnitude, 0.05f, Time.deltaTime);
 
 			//_currentWalkSpeed = _input.magnitude < 0.5f && !_isSprinting ? WalkSpeedModifier : 1;
             MoveVector = new Vector3(_input.x, MoveVector.y, _input.y);
@@ -91,7 +89,7 @@ public class PlayerController : Entity
 	// Update is called once per frame
 	void Update()
 	{
-		ApplyGravity();
+		//ApplyGravity();
 		Move();
 		Look();
 	}
@@ -134,11 +132,11 @@ public class PlayerController : Entity
             moveDir.Set(moveDir.x, yVelocity, moveDir.z);
         }
 
-
-		_characterController.Move(moveDir * _input.magnitude * Time.deltaTime * MoveSpeed  * _currentSprintSpeed);
+        _animator.SetFloat("Move Speed", _input.magnitude, 0.05f, Time.deltaTime);
+        _characterController.Move(moveDir * _input.magnitude * Time.deltaTime * MoveSpeed  * _currentSprintSpeed);
     }
 
-	protected override void Look()
+    protected override void Look()
 	{
 
 	}
